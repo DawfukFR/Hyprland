@@ -73,36 +73,36 @@ std::string CHyprCtl::getMonitorData(Hyprutils::Memory::CSharedPointer<CMonitor>
 
     result += std::format(
         R"#({{
-    "id": {},
-    "name": "{}",
-    "description": "{}",
-    "make": "{}",
-    "model": "{}",
-    "serial": "{}",
-    "width": {},
-    "height": {},
-    "refreshRate": {:.5f},
-    "x": {},
-    "y": {},
-    "activeWorkspace": {{
-        "id": {},
-        "name": "{}"
-    }},
-    "specialWorkspace": {{
-        "id": {},
-        "name": "{}"
-    }},
-    "reserved": [{}, {}, {}, {}],
-    "scale": {:.2f},
-    "transform": {},
-    "focused": {},
-    "dpmsStatus": {},
-    "vrr": {},
-    "activelyTearing": {},
-    "disabled": {},
-    "currentFormat": "{}",
-    "availableModes": [{}]
-}},)#",
+            "id": {},
+            "name": "{}",
+            "description": "{}",
+            "make": "{}",
+            "model": "{}",
+            "serial": "{}",
+            "width": {},
+            "height": {},
+            "refreshRate": {:.5f},
+            "x": {},
+            "y": {},
+            "activeWorkspace": {{
+                "id": {},
+                "name": "{}"
+            }},
+            "specialWorkspace": {{
+                "id": {},
+                "name": "{}"
+            }},
+            "reserved": [{}, {}, {}, {}],
+            "scale": {:.2f},
+            "transform": {},
+            "focused": {},
+            "dpmsStatus": {},
+            "vrr": {},
+            "activelyTearing": {},
+            "disabled": {},
+            "currentFormat": "{}",
+            "availableModes": [{}]
+        }},)#",
         m->ID, escapeJSONStrings(m->szName), escapeJSONStrings(m->szShortDescription), escapeJSONStrings(m->output->make), escapeJSONStrings(m->output->model),
         escapeJSONStrings(m->output->serial), (int)m->vecPixelSize.x, (int)m->vecPixelSize.y, m->refreshRate, (int)m->vecPosition.x, (int)m->vecPosition.y,
         m->activeWorkspaceID(), (!m->activeWorkspace ? "" : escapeJSONStrings(m->activeWorkspace->m_szName)), m->activeSpecialWorkspaceID(),
@@ -125,15 +125,9 @@ std::string monitorsRequest(eHyprCtlOutputFormat format, std::string request) {
 
     std::string result = "";
     if (format == eHyprCtlOutputFormat::FORMAT_JSON) {
-        result += "[";
-
         for (auto& m : allMonitors ? g_pCompositor->m_vRealMonitors : g_pCompositor->m_vMonitors) {
             result += CHyprCtl::getMonitorData(m, format);
         }
-
-        trimTrailingComma(result);
-
-        result += "]";
     } else {
         for (auto& m : allMonitors ? g_pCompositor->m_vRealMonitors : g_pCompositor->m_vMonitors) {
             if (!m->output || m->ID == -1ull)
