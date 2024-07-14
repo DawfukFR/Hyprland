@@ -188,7 +188,7 @@ CWLSHMProtocol::CWLSHMProtocol(const wl_interface* iface, const int& ver, const 
 
 void CWLSHMProtocol::bindManager(wl_client* client, void* data, uint32_t ver, uint32_t id) {
     if (shmFormats.empty()) {
-        size_t len = 0;
+        // size_t len = 0; (unused variable)
         // TODO: support 10 bit shm
 
         shmFormats.push_back(WL_SHM_FORMAT_ARGB8888);
